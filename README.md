@@ -68,4 +68,5 @@ The order of semaphore operations is crucial to prevent deadlock:
 The consumer handles cleanup of:
 - Semaphores (unlinking)
 - Shared memory (unmapping and unlinking)
+
 This ensures resources are properly released when the consumer finished 
