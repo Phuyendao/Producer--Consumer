@@ -24,3 +24,37 @@ gcc consumer.c -pthread -lrt -o consumer
 ```
 ## Implementation details
 ### Semaphores
+Three semaphores are used: 
+1. *full_sem* : Counts number of filled slots (initialized to 0)
+2. *empty_sem* : Counts number of empty slots (initialized to BUFFER_SIZE)
+3. *mutex_sem* : Binary semaphore for mutual exclusion (initialized to 1)
+### Producer
+- Produces 10 items randomly
+- Waits for the empty slot
+- Locks mutex before accessing shared memory
+- Places item in buffer
+- Updates produce index
+- Releases mutex and signals 
+### Consumer
+- Consumes 10 items
+- Waits for filled slots
+- Locks mutex before accessing shared memory
+- Takes item from buffer
+- Updates consume index
+- Releases mutex and signals
+### Shared memory 
+- Defined in shared.h
+- Contains a circular buffer of size 2
+- Tracks next produce and consume indices
+- Accessed by both producer and consumer
+
+## Synchronization mechanism
+The solution ensures:
+1. Mutual exclusion:  Only one process accesses the buffer at a time
+2. Bounded Waiting: Producers wait when the buffer is full, consumers wait when empty
+3. Progress: Processes alternate access properly
+The order of semaphore operations is crucial to prevent deadlock:
+- Producer: wait(empty), wait(mutex), ... post(mutex), post(full)
+- Consumer: wait(full), wait(mutex), ... post(mutex), post(empty)
+
+
