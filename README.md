@@ -1,4 +1,7 @@
 # Producer and Consumer Problem Implementation
+**Name** Phuong Huyen Dao
+
+**Class** CS 33211 Operating system
 ## Overview
 The Producer-Consumer problem is a classic synchronization problem:
 - A producer process generates items and places them on a shared buffer (table)
@@ -53,8 +56,16 @@ The solution ensures:
 1. Mutual exclusion:  Only one process accesses the buffer at a time
 2. Bounded Waiting: Producers wait when the buffer is full, consumers wait when empty
 3. Progress: Processes alternate access properly
+
 The order of semaphore operations is crucial to prevent deadlock:
 - Producer: wait(empty), wait(mutex), ... post(mutex), post(full)
 - Consumer: wait(full), wait(mutex), ... post(mutex), post(empty)
 
+## Sample output
+![Sample output](https://github.com/user-attachments/assets/55ba4e99-989d-4f17-83ae-4f47dd3333f3)
 
+## Cleanup
+The consumer handles cleanup of:
+- Semaphores (unlinking)
+- Shared memory (unmapping and unlinking)
+This ensures resources are properly released when the consumer finished 
